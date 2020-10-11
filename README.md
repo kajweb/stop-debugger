@@ -1,10 +1,14 @@
 # stop-debugger
 
-A Chrome Extension for disable the debugger function in Chrome DevTools;
+一个禁止Chrome DevTools中执行debugger的拓展。
+
+A Chrome Extension for disable the debugger function in Chrome DevTools。
+
+
 
 ## 使用说明
 
-还没写完
+还在写完
 
 
 
@@ -23,6 +27,8 @@ chrome拓展的源码
 
 
 ## 支持计划
+
+可以在[deploy](./deploy/)，或者打开[在线测试页面](http://test.iwwee.com/debugger/extensionSet.html)
 
 - [ ] 不带分号的debugger
 
