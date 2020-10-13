@@ -1,0 +1,26 @@
+*{
+	margin: 0;
+	padding: 0;
+}
+
+html{
+	height: 80px;
+	width: 140px;
+}
+
+h3,div{
+	text-align: center;
+}
+
+button{
+	width: 50px;
+	height: 50px;
+	margin: 10px 0;
+	display: inline-block;
+	cursor: pointer;
+	border-radius: 45px;
+}
+
+#status{
+	color: red;
+}

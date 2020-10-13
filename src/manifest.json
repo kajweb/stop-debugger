@@ -1,0 +1,49 @@
+{
+	// 清单文件的版本，这个必须写，而且必须是2
+	"manifest_version": 2,
+	// 插件的名称
+	"name": "stop-debugger",
+	// 插件的版本
+	"version": "1.0.0",
+	// 插件描述
+	"description": "禁用debugger。",
+	// 图标，一般偷懒全部用一个尺寸的也没问题
+	"icons":
+	{
+		"16": "img/icon.png",
+		"48": "img/icon.png",
+		"128": "img/icon.png"
+	},
+	// 浏览器右上角图标设置，browser_action、page_action、app必须三选一
+	"browser_action": 
+	{
+		"default_icon": "img/icon.png",
+		// 图标悬停时的标题，可选
+		"default_title": "stop-debugger",
+		"default_popup": "popup/popup.html"
+	},
+	// 权限申请
+	"permissions":
+	[
+		// "contextMenus", // 右键菜单
+		// "tabs", // 标签
+		// "notifications", // 通知
+		"storage", // 插件本地存储
+		"http://*/*", // 可以通过executeScript或者insertCSS访问的网站
+		"https://*/*" // 可以通过executeScript或者insertCSS访问的网站
+	],
+
+	"content_scripts": [ {
+	      "js": ["content_scripts/index.js"],
+	      "matches": ["<all_urls>"],
+	      "run_at": "document_start"
+	}],
+
+	// 普通页面能够直接访问的插件资源列表，如果不设置是无法直接访问的
+	// "web_accessible_resources": ["js/inject.js"],
+	"homepage_url": "https://github.com/kajweb/stop-debugger",
+	"web_accessible_resources": [
+        // "style/fix-filter.css"
+        "js/inject.js"
+    ]
+}
