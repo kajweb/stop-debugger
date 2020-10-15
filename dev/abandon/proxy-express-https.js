@@ -1,4 +1,7 @@
 // This file is not used
+// 使用express对页面进行代理，并替换相关内容
+// Use express to proxy the page and replace related content
+
 var express = require('express');
 var request = require('request')
 var bodyParser = require("body-parser");  
