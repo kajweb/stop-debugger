@@ -4,9 +4,9 @@
 // https://www.cnblogs.com/xuhang/p/5496604.html
 
 let config = {
-    outPort: 8887,
-    httpPort: 8888,
-    httpsPort: 8889,
+    outPort: 8888,
+    httpPort: 8889,
+    httpsPort: 8890,
     key: './cert/localhost.key',
     cert: './cert/localhost.crt'
 }
@@ -42,6 +42,7 @@ https.createServer(options).on('request', requestHttps).listen(config.httpsPort,
 
 net.createServer(function(socket){
     socket.once('data', function(buf){
+        console.log( buf.toString() )
         // console.log(buf[0]);
         // https数据流的第一位是十六进制“16”，转换成十进制就是22
         // http数据流的第一位转换成十进制就是71
@@ -64,7 +65,6 @@ net.createServer(function(socket){
 }).listen(config.outPort);
 
 console.log( "Now,You can send proxy via http or https." );
-console.log( ` http://localhost:${config.outPort}` )
-console.log( `https://localhost:${config.outPort}` )
+console.log( `http[s]://localhost:${config.outPort}` )
 console.log( ` http://localhost:${config.httpPort}` )
 console.log( `https://localhost:${config.httpsPort}` )
