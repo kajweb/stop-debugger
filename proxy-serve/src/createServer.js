@@ -15,7 +15,7 @@ async function start( proxyAddr, proxyPort ){
         let SNIServerPort = SNIServer.address().port;
         [httpServer,httpsServer].map( server => {
             server.on( "request", handle.httpReques )
-            server.on( "connect", handle.httpsConnectBinder(SNIServerPort) )
+            server.on( "connect", httpsConnect(SNIServerPort) )
         })
         SNIServer.on( "request", handle.SNIServer )
         let servers = {
@@ -75,6 +75,25 @@ async function createSNIHttpServer( SNIServerPort=0 ){
         return Promise.reject( new Error("Failed to create SNI HttpServer") );
     })
     .listen(SNIServerPort);
+}
+
+function httpsConnect(SNIServerPort) {
+    // 连接目标服务器
+    return function(clientRequest, clientSocket, head){
+        console.log( "app.js/connect" )
+        const targetSocket = net.connect(this.SNIServerPort, '127.0.0.1', () => {
+            // 通知客户端已经建立连接
+            clientSocket.write(
+                'HTTP/1.1 200 Connection Established\r\n'
+                    + 'Proxy-agent: MITM-proxy\r\n'
+                    + '\r\n',
+            );
+
+            // 建立通信隧道，转发数据
+            targetSocket.write(head);
+            clientSocket.pipe(targetSocket).pipe(clientSocket);
+        });
+    }.bind({SNIServerPort})
 }
 
 // 对外接口，统一处理HTTP/HTTPS，再分流到其他端口
