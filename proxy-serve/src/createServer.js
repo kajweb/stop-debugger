@@ -3,10 +3,18 @@ const http = require('http');
 const tls = require('tls');
 const net = require('net');
 
-const getCert = require('./cert');
-const handle = require( "./handle" );
+const GetCert = require('./cert');
+const Handle = require( "./handle" );
+const Utils = require( "./utils" );
+const Config = require( "./config" );
 
-async function start( proxyAddr, proxyPort ){
+async function start( proxyAddr=false, proxyPort=false ){
+    proxyAddr = proxyAddr || Config.proxyAddr;
+    proxyPort = proxyPort || Config.proxyPort;
+    if( Utils.isIp( proxyAddr ) ){
+        // ERR_SSL_VERSION_OR_CIPHER_MISMATCH
+        console.warn( "使用IP将可能导致CA生成域名证书，HTTPS有可能发生ERR_PROXY_CERTIFICATE_INVALID异常" )
+    }
     return Promise.all([
         createHttpProxyServer(),
         createHttpsProxyServer( proxyAddr ),
@@ -14,21 +22,27 @@ async function start( proxyAddr, proxyPort ){
     ]).then( ([httpServer, httpsServer, SNIServer]) => {
         let SNIServerPort = SNIServer.address().port;
         [httpServer,httpsServer].map( server => {
-            server.on( "request", handle.httpReques )
+            server.on( "request", Handle.httpReques )
             server.on( "connect", httpsConnect(SNIServerPort) )
         })
-        SNIServer.on( "request", handle.SNIServer )
+        SNIServer.on( "request", Handle.SNIServer )
         let servers = {
             http: httpServer,
             https: httpsServer,
             SNI: SNIServer,
+            toString(){
+                return proxyAddr;
+            }
         };
         let ports = {
             http: httpServer.address().port,
             https: httpsServer.address().port,
-            SNI: SNIServerPort
+            SNI: SNIServerPort,
+            toString(){
+                return proxyPort;
+            }
         }
-        return [ servers, ports ];
+        return [servers, ports];
     }).then( ([servers, ports]) => {
         createDiversionServer( proxyPort, ports.http, ports.https );
         return [servers, ports];
@@ -46,7 +60,7 @@ async function createHttpProxyServer( httpProxyServerProt=0 ){
 
 // HTTPS代理
 async function createHttpsProxyServer( proxyAddr='proxyPort', httpsProxyServerProt=0 ){
-    const serverCrt = getCert( proxyAddr );
+    const serverCrt = GetCert( proxyAddr );
     return await https.createServer({
         key: serverCrt.key,
         cert: serverCrt.cert,
@@ -61,7 +75,7 @@ async function createHttpsProxyServer( proxyAddr='proxyPort', httpsProxyServerPr
 async function createSNIHttpServer( SNIServerPort=0 ){
     return await https.Server({
         SNICallback: (hostname, callback) => {
-            const { key, cert } = getCert(hostname);
+            const { key, cert } = GetCert(hostname);
             callback(
                 null,
                 tls.createSecureContext({

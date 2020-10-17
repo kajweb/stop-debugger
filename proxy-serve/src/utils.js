@@ -32,6 +32,12 @@ function deepClone(target) {
     return result;
 }
 
+function isIp( _str ){
+    let regExp = /((2[0-4]\d|25[0-5]|[01]?\d\d?)\.){3}(2[0-4]\d|25[0-5]|[01]?\d\d?)/;
+    return regExp.test( _str );
+}
+
 module.exports = {
-    deepClone
+    deepClone,
+    isIp
 }

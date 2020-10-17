@@ -5,16 +5,18 @@ const fs = require('fs');
 const forge = require('node-forge');
 const path = require('path');
 
-const config = require('../config');
-const utils = require('../utils');
+const Extensions = require('./extensions');
+
+const Config = require('../config');
+const Utils = require('../utils');
 
 // 读取 CA证书，后面需要根据它创建域名证书
 // decrypts a PEM-formatted, encrypted private key
 // const caKey = forge.pki.decryptRsaPrivateKey(fs.readFileSync(path.resolve(__dirname, config.caKey)));
-const caKey = forge.pki.decryptRsaPrivateKey(fs.readFileSync( config.caKey ));
+const caKey = forge.pki.decryptRsaPrivateKey(fs.readFileSync( Config.caKey ));
 // convert a Forge certificate from PEM
 // const caCert = forge.pki.certificateFromPem(fs.readFileSync(path.resolve(__dirname, config.caCert)));
-const caCert = forge.pki.certificateFromPem(fs.readFileSync( config.caCert ));
+const caCert = forge.pki.certificateFromPem(fs.readFileSync( Config.caCert ));
 
 // 证书缓存列表
 const certCache = {};
@@ -87,26 +89,16 @@ function getSubject( caCertSubject, domain ){
 }
 
 // 生成Extensions
-/*
-	SubjectAltName ::= GeneralNames
-	GeneralNames ::= SEQUENCE SIZE (1..MAX) OF GeneralName
-	GeneralName ::= CHOICE {
-	    otherName                       [0]     OtherName,
-	    rfc822Name                      [1]     IA5String,
-	    dNSName                         [2]     IA5String,
-	    x400Address                     [3]     ORAddress,
-	    directoryName                   [4]     Name,
-	    ediPartyName                    [5]     EDIPartyName,
-	    uniformResourceIdentifier       [6]     IA5String,
-	    iPAddress                       [7]     OCTET STRING,
-	    registeredID                    [8]     OBJECT IDENTIFIER 
-	}
-*/
 function getExtensions( domain ) {
-	return [    {
+	let subjectAltType = Extensions.subjectAltType;
+	let type = subjectAltType.dNSName.value;
+	if( Utils.isIp(domain) ){
+		type = subjectAltType.iPAddress.value;
+	}
+	return [{
         name: 'subjectAltName',
         altNames: [{
-            type: 2,
+            type,
             value: domain
         }]
     }, {
@@ -124,7 +116,7 @@ function createServerCertificate( domain ){
     cert.validity.notAfter = getNotAfterDate();
     let caIssuer = caCert.subject.attributes
     cert.setIssuer( caIssuer );
-    let certSubject = getSubject( utils.deepClone( caIssuer ), domain );
+    let certSubject = getSubject( Utils.deepClone( caIssuer ), domain );
     cert.setSubject( certSubject );
     cert.setExtensions( getExtensions( domain ) );
     cert.sign(caKey, forge.md.sha256.create());
