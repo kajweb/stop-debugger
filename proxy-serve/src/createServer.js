@@ -1,5 +1,5 @@
-const https = require('https');
 const http = require('http');
+const https = require('https');
 const tls = require('tls');
 const net = require('net');
 
@@ -30,7 +30,7 @@ async function start( proxyAddr=false, proxyPort=false ){
             http: httpServer,
             https: httpsServer,
             SNI: SNIServer,
-            toString(){
+            [Symbol.toPrimitive]() {
                 return proxyAddr;
             }
         };
@@ -38,7 +38,7 @@ async function start( proxyAddr=false, proxyPort=false ){
             http: httpServer.address().port,
             https: httpsServer.address().port,
             SNI: SNIServerPort,
-            toString(){
+            [Symbol.toPrimitive]() {
                 return proxyPort;
             }
         }
@@ -91,21 +91,30 @@ async function createSNIHttpServer( SNIServerPort=0 ){
     .listen(SNIServerPort);
 }
 
-function httpsConnect(SNIServerPort) {
+function httpsConnect( SNIServerPort ) {
     // 连接目标服务器
-    return function(clientRequest, clientSocket, head){
+    return function( clientRequest, clientSocket, head ){
         console.log( "app.js/connect" )
-        const targetSocket = net.connect(this.SNIServerPort, '127.0.0.1', () => {
+        const { port, hostname } = new URL(`http://${clientRequest.url}`);
+        const targetSocket = net.connect( this.SNIServerPort, '127.0.0.1', () => {
+        // const targetSocket = net.connect( port || 80, hostname, () => {
             // 通知客户端已经建立连接
             clientSocket.write(
                 'HTTP/1.1 200 Connection Established\r\n'
                     + 'Proxy-agent: MITM-proxy\r\n'
                     + '\r\n',
             );
-
             // 建立通信隧道，转发数据
             targetSocket.write(head);
             clientSocket.pipe(targetSocket).pipe(clientSocket);
+        });
+        targetSocket.on("error",(err)=>{
+            if( err.code == "ETIMEDOUT" ){
+                console.error("[ETIMEDOUT] httpsConnect targetSocket error");
+            } else {
+                console.error("httpsConnect targetSocket error");
+                console.error(err);
+            }
         });
     }.bind({SNIServerPort})
 }
@@ -114,27 +123,13 @@ function httpsConnect(SNIServerPort) {
 async function createDiversionServer( outPort, httpPort, httpsPort ){
     // console.log( httpsPort  )
     return net.createServer(function(socket){
-        // socket.on('lookup',(e)=>{
-        //     console.log("lookup")
-        //     console.log( e )
-        // })
-
-        // socket.on('connect',(e)=>{
-        //     console.log("connect")
-        //     console.log( e )
-        // })
-
         socket.once('data', function(buf){
-            // console.log( buf )
             console.log("DiversionServerOnData")
             // console.log( buf[0] );
-            // console.log( socket.localAddress )
-            console.log( buf.toString() )
+            // console.log( buf.toString() )
             // https数据流的第一位是十六进制“16”，转换成十进制就是22
             // http数据流的第一位转换成十进制就是47-?71 / 43->67
             var address = buf[0] === 22 ? httpsPort : httpPort;
-            // address = httpPort;
-            // address = httpsPort;
             // 创建一个指向https或http服务器的链接
             var proxy = net.createConnection(address, function() {
                 proxy.write(buf);
@@ -143,12 +138,18 @@ async function createDiversionServer( outPort, httpPort, httpsPort ){
             });
         
             proxy.on('error', function(err) {
-                console.log(err);
+                console.error("createDiversionServer proxy error");
+                console.error(err);
             });
         });
         
         socket.on('error', function(err) {
-            console.log(err);
+            if( err.code == "ECONNRESET" ){
+                console.error("[ECONNRESET] createDiversionServer socket error");
+            } else {
+                console.error("createDiversionServer socket error");
+                console.error(err);
+            }
         });
     }).listen( outPort );
 }
