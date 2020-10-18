@@ -1,3 +1,5 @@
+// 旧版本，不兼容https
+
 var http = require('http');
 var https = require('https');
 var url = require('url');
