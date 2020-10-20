@@ -1,4 +1,5 @@
-<p align="right">You are the <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> persons(times) to visit the stop-debugger.</p>[中文](../README.md)　English　
+<p align="right">You are the <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> persons(times) to visit the stop-debugger.</p>
+[中文](../README.md)　English　
 
 # stop-debugger
 
@@ -24,16 +25,13 @@ This program is divided into two parts: `chrome browser extension` and `Node sys
 
   The `Node system agent` is used to process the `debugger` appearing in files such as javascript`, `html`, and `json`, use specific regular expressions to match the `debugger`, and annotate the corresponding code.
 
-  ```bash
+```bash
 git clone https://github.com/kajweb/stop-debugger.git
 cd stop-debugger/proxy-serve 
 cd proxy-serve
 npm i
 npm run en
-  ```
-
-
-
+```
 
 > The https link needs to install the certificate to the `Trusted Root Certification Authority`, otherwise it may not be able to process HTTPS requests.
 >
