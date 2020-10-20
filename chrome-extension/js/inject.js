@@ -51,12 +51,11 @@ Function.prototype.constructor("debugger")()
 
 
 Function = (function(oldFn){
-	return function(e){
-		if( e=="debugger" ){
+	return function(){
+		if( arguments[0]=="debugger" ){
 			return ()=>{console.log("can't exec debugger")};
 		}
-        console.log(e)
-		return new oldFn(e)
+		return new oldFn(arguments)
 	}
 })(Function)
 console.log("拦截方法2已启动")

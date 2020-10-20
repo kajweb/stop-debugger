@@ -33,13 +33,17 @@ function SNIServer( cReq, cRes ){
     requestProcess( cReq, cRes, https, options );
 }
 
-function requestProcess( cReq, cRes, requestObj, options ){
+function optionsAssign( cReq, options ){
     var u = url.parse(cReq.url);
-    Object.assign( options, {
+    return Object.assign( options, {
         path     : u.path,       
         method   : cReq.method,
         headers  : cReq.headers
     });
+}
+
+function requestProcess( cReq, cRes, requestObj, options ){
+    let newOptions = optionsAssign( cReq, options );
     var pReq = requestObj.request(options, function(pRes) {
         if ('content-length' in pRes.headers) {
             delete pRes.headers['content-length'];
@@ -50,13 +54,16 @@ function requestProcess( cReq, cRes, requestObj, options ){
         let contentType = Encoding.getContentType(pRes.headers);
         let isDocModifiable = Core.isDocModifiable( contentType );
         if( isDocModifiable && thisZlib.encoding ){
+            console.log("pip: utz")
             pRes.pipe(thisZlib.unzip)
                 .pipe(through2(Core.pipe))
                 .pipe(thisZlib.zip)
                 .pipe(cRes);
         } else if( isDocModifiable ){
+            console.log("pip: t")
             pRes.pipe(through2(Core.pipe)).pipe(cRes);
         } else {
+            console.log("pip: null")
             pRes.pipe(cRes);
         }
     })
