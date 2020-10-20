@@ -1,3 +1,8 @@
+const iconv = require("iconv-lite");
+
+const Encoding = require('./encoding');
+
+
 /**
  * 根据网页返回的contentType
  * 判断文档类型是否可修改
@@ -22,26 +27,53 @@ function isDocModifiable( contentType ){
 	return /(?=.*(text|javascript|json)+)(^((?!css).)*$)/.test( contentType )
 }
 
+
 /**
- *  对函数的数据流进行处理
- *  并调用stopDebugger注释debugger
- * 
- * (Google Translate)
- * Process the data flow of the function
- * And call stopDebugger to comment debugger
- * 
- * through2处理函数
+ * @function 对函数的数据流进行处理 ，并调用stopDebugger注释debugger
+ * @description [optimize] 匿名函数可能会调用多次，需要增加缓存
  *
+ * (Google Translate)
+ * @function Process the data flow of the function and call stopDebugger to annotate debugger
+ * @description  The anonymous function may be called multiple times, and the cache needs to be increased
+ * 
+ * @param   {String}   	contentType  	header的contentType
+ * @return  {Function}  through2 		through2调用的函数
+ *
+ * through2处理函数
  * @param 	{buffer} 	chunk	待处理的buffer
  * @param 	{string} 	enc		编码方式
  * @param 	{function} 	cb		callback 回调
  * @return 	{void}
  */
-function pipe( chunk, enc, cb ){
-	let data = chunk.toString();
-	// console.log( data )
-	let newBuff = Buffer.from( stopDebugger(data) );
-	cb(null,newBuff)
+function pipeIconv( contentType ){
+	var characterSet = false;
+	return ( chunk, enc, cb )=>{
+		let data = false;
+		if( !characterSet ){
+			let charsetObj = Encoding.getCharset( contentType, chunk );
+			characterSet = charsetObj.characterSet;
+			data = charsetObj.data;
+		}
+		data = data || iconv.decode( chunk, characterSet );
+		let newString = stopDebugger( data );
+		let newBuff = iconv.encode( newString, characterSet );
+		cb( null, newBuff );
+	}
+}
+
+function pipeIconv_old( chunk, enc, cb ){
+	// 判断优先级
+	// 如果header->meta->def
+	// 如果meta->header->def
+	// 如果默认
+
+	// 获得默认编码
+	// 用默认编码解析代码
+	// 解析代码后获得正确的参数
+	let data = iconv.decode( chunk, 'gb2312' );
+	let newString = stopDebugger( data );
+	let newBuff = iconv.encode( newString, 'gb2312' );
+	cb( null, newBuff );
 }
 
 /**
@@ -60,7 +92,7 @@ function stopDebugger( data ){
 }
 
 module.exports = {
-	pipe,
+	pipeIconv,
 	stopDebugger,
 	isDocModifiable
 }

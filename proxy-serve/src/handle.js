@@ -1,50 +1,78 @@
 const net = require('net');
 const http = require('http');
 const https = require('https');
-var url = require('url');
-var through2 = require('through2');
+const url = require('url');
+const through2 = require('through2');
 
-var Encoding = require('./encoding');
-var Core = require('./core');
+const Encoding = require('./encoding');
+const Core = require('./core');
+const Config = require('./config');
 
-// 请求到HTTP服务器的请求（HTTP）
+var clRequest = Config.log.request;
+
+/**
+ * 【HTTP】请求到HTTP服务器的请求执行的操作
+ * [HTTP] Request to HTTP server
+ * @param   {http.ClientRequest}    cReq
+ * @param   {http.ServerResponse}   cRes
+ * @return  {Void}
+ */
 function httpReques( cReq, cRes ) {
-    console.log("Http Request Http");
-	console.log( "request：" + cReq.url );
-
     var u = url.parse(cReq.url);
     var options = {
         hostname : u.hostname, 
         port     : u.port || 80,
     };
+    clRequest && console.log( `【Http://】${cReq.url}` );
     requestProcess( cReq, cRes, http, options );
 }
 
-
-// 请求到SNI服务器的请求（HTTPS）
+/**
+ * 【HTTPS】请求到SNI服务器的请求执行的操作
+ * [HTTPS] Request to SNI server
+ * @param   {http.ClientRequest}    cReq
+ * @param   {http.ServerResponse}   cRes
+ * @return  {Void}
+ */
 function SNIServer( cReq, cRes ){
-    console.log("SNIServer")
-    console.log( "request：" + cReq.url )
     var u = url.parse(cReq.url);
     var options = {
         hostname : cReq.headers.host, 
         port     : u.port || 443,
     };
+    clRequest && console.log( `【Https://】${options.hostname}:${options.port}${cReq.url}` );
     requestProcess( cReq, cRes, https, options );
 }
 
+/**
+ * 合并url参数
+ * Combine url parameters
+ * @param   {http.ClientRequest}   cReq
+ * @param   {Object}               options
+ * @return  {Object}               Object.assign()
+ */
 function optionsAssign( cReq, options ){
     var u = url.parse(cReq.url);
-    return Object.assign( options, {
+    return Object.assign( {}, options, {
         path     : u.path,       
         method   : cReq.method,
-        headers  : cReq.headers
+        headers  : cReq.headers,
+        encoding : null
     });
 }
 
+/**
+ * 处理请求，对请求执行解密、处理、加密操作
+ * Process the request, perform decryption, processing, and encryption operations on the request
+ * @param   {http.ClientRequest}   cReq
+ * @param   {http.ServerResponse}  cRes
+ * @param   {Object}               requestObj   执行request的模块（如http、https、net模块）
+ * @param   {Object}               options      url参数
+ * @return  {Void}
+ */
 function requestProcess( cReq, cRes, requestObj, options ){
     let newOptions = optionsAssign( cReq, options );
-    var pReq = requestObj.request(options, function(pRes) {
+    var pReq = requestObj.request( newOptions, function(pRes) {
         if ('content-length' in pRes.headers) {
             delete pRes.headers['content-length'];
         }
@@ -54,25 +82,20 @@ function requestProcess( cReq, cRes, requestObj, options ){
         let contentType = Encoding.getContentType(pRes.headers);
         let isDocModifiable = Core.isDocModifiable( contentType );
         if( isDocModifiable && thisZlib.encoding ){
-            console.log("pip: utz")
-            pRes.pipe(thisZlib.unzip)
-                .pipe(through2(Core.pipe))
+            pRes
+                .pipe(thisZlib.unzip)
+                .pipe(through2( Core.pipeIconv(contentType) ))
+                // .pipe(through2(Core.pipe))
                 .pipe(thisZlib.zip)
                 .pipe(cRes);
         } else if( isDocModifiable ){
-            console.log("pip: t")
-            pRes.pipe(through2(Core.pipe)).pipe(cRes);
+            pRes.pipe(through2( Core.pipeIconv(contentType) )).pipe(cRes);
         } else {
-            console.log("pip: null")
             pRes.pipe(cRes);
         }
     })
     pReq.on('error', (err)=>{
-        if( err.code == "ENOTFOUND" ){
-            console.error("[ENOTFOUND] Failed to requestProcess");
-        } else {
-            console.error(`[${err.code}] Failed to requestProcess`);
-        }
+        console.error(`[${err.code}] Failed to requestProcess`);
     })
     pReq.end();
 }
