@@ -1,5 +1,5 @@
+<p align="left"><a href="../">中文</a>　English</p>
 <p align="right">You are the <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> persons(times) to visit the stop-debugger.</p>
-[中文](../README.md)　English　
 
 # stop-debugger
 
