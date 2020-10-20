@@ -1,4 +1,4 @@
-中文　[English](docs/README_EN.md) 　<p align="right">你是第 <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> 个（次）人浏览 stop-debugger.</p>
+<p align="right">你是第 <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> 个（次）人浏览 stop-debugger.</p>中文　[English](docs/README_EN.md) 　
 
 # stop-debugger
 
@@ -71,7 +71,7 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 
 可以在[deploy](./deploy/)，或者打开[在线测试页面](http://test.iwwee.com/debugger/extensionSet.html)
 
-- [x] 不带分号的debugger
+- - [x] 不带分号的debugger
 
 
 > 此类型代码使用`proxy-serve`进行处理
@@ -81,7 +81,7 @@ debugger
 let c = a+b;
 ```
 
-- [x] 带分号的debugger
+- - [x] 带分号的debugger
 
 >此类型代码使用`proxy-serve`进行处理
 
@@ -91,7 +91,7 @@ debugger;
 let c = a+b;
 ```
 
-- [x] （多语句）后面还带语句的debugger
+- - [x] （多语句）后面还带语句的debugger
 
 >此类型代码使用`proxy-serve`进行处理
 
@@ -101,7 +101,7 @@ let a = 1,b = 2;
 debugger;let c = a+b;
 ```
 
-- [x] （多语句）前面、后面还带语句的debugger
+- - [x] （多语句）前面、后面还带语句的debugger
 
 >此类型代码使用`proxy-serve`进行处理
 
@@ -110,7 +110,7 @@ debugger;let c = a+b;
 let a = 1,b = 2;debugger;let c = a+b;
 ```
 
-- [x] （多语句）前面还带语句的debugger
+- - [x] （多语句）前面还带语句的debugger
 
 >此类型代码使用`proxy-serve`进行处理
 
@@ -120,7 +120,7 @@ let a = 1,b = 2;debugger
 let c = a+b;
 ```
 
-- [x] 使用Function生成的debugger
+- - [x]  使用Function生成的debugger
 
 >此类型代码使用`chrome-extension`进行处理
 
@@ -130,7 +130,7 @@ let fn = new Function("debu"+"gger");
 fn()
 ```
 
-- [x] 使用Function生成的多参数debugger
+- - [x] 使用Function生成的多参数debugger
 
 >此类型代码使用`chrome-extension`进行处理
 
@@ -139,7 +139,7 @@ let fn = new Function("x","debugger");
 fn()
 ```
 
-- [x] 预防简单的检测
+- - [x] 预防简单的检测
 
 >此类型代码使用`chrome-extension`进行处理
 
@@ -151,7 +151,7 @@ if( a!==";debug" + "ger;" ){
 debugger
 ```
 
-- [x] 使用eval执行debugger
+- - [x] 使用eval执行debugger
 
 >此类型代码使用`chrome-extension`进行处理
 
@@ -159,7 +159,7 @@ debugger
 eval("debugger");
 ```
 
-- [x] 使用Function执行debugger
+- - [x] 使用Function执行debugger
 
 >此类型代码使用`chrome-extension`进行处理
 
