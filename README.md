@@ -1,4 +1,5 @@
-<p align="left">中文　<a href="docs/README_EN.md">English</a></p>
+中文  [English](docs/README_EN.md)  
+
 <p align="right">你是第 <img align="center"  alt="visitors" src="https://visitor-badge.glitch.me/badge?page_id=kajweb/stop-debugger" /> 个（次）人浏览 stop-debugger.</p>
 
 # stop-debugger
