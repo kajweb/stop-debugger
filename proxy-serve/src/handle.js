@@ -23,7 +23,7 @@ function httpReques( cReq, cRes ) {
         hostname : u.hostname, 
         port     : u.port || 80,
     };
-    clRequest && console.log( `【HttpRequest】${cReq.url}` );
+    clRequest && console.log( `【Http://】${cReq.url}` );
     requestProcess( cReq, cRes, http, options );
 }
 
@@ -35,13 +35,12 @@ function httpReques( cReq, cRes ) {
  * @return  {Void}
  */
 function SNIServer( cReq, cRes ){
-
     var u = url.parse(cReq.url);
     var options = {
         hostname : cReq.headers.host, 
         port     : u.port || 443,
     };
-    clRequest && console.log( `【HttpsRequest】${options.hostname}:${options.port}${cReq.url}` );
+    clRequest && console.log( `【Https://】${options.hostname}:${options.port}${cReq.url}` );
     requestProcess( cReq, cRes, https, options );
 }
 
@@ -54,10 +53,11 @@ function SNIServer( cReq, cRes ){
  */
 function optionsAssign( cReq, options ){
     var u = url.parse(cReq.url);
-    return Object.assign( options, {
+    return Object.assign( {}, options, {
         path     : u.path,       
         method   : cReq.method,
-        headers  : cReq.headers
+        headers  : cReq.headers,
+        encoding : null
     });
 }
 
@@ -72,7 +72,7 @@ function optionsAssign( cReq, options ){
  */
 function requestProcess( cReq, cRes, requestObj, options ){
     let newOptions = optionsAssign( cReq, options );
-    var pReq = requestObj.request(options, function(pRes) {
+    var pReq = requestObj.request( newOptions, function(pRes) {
         if ('content-length' in pRes.headers) {
             delete pRes.headers['content-length'];
         }
@@ -82,12 +82,14 @@ function requestProcess( cReq, cRes, requestObj, options ){
         let contentType = Encoding.getContentType(pRes.headers);
         let isDocModifiable = Core.isDocModifiable( contentType );
         if( isDocModifiable && thisZlib.encoding ){
-            pRes.pipe(thisZlib.unzip)
-                .pipe(through2(Core.pipe))
+            pRes
+                .pipe(thisZlib.unzip)
+                .pipe(through2( Core.pipeIconv(contentType) ))
+                // .pipe(through2(Core.pipe))
                 .pipe(thisZlib.zip)
                 .pipe(cRes);
         } else if( isDocModifiable ){
-            pRes.pipe(through2(Core.pipe)).pipe(cRes);
+            pRes.pipe(through2( Core.pipeIconv(contentType) )).pipe(cRes);
         } else {
             pRes.pipe(cRes);
         }
