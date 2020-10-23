@@ -4,5 +4,6 @@ module.exports = {
 	HttpsServer: "HttpsServer",
 	SNIServer: "SNIServer",
 	BeforeStart: "\nAll Services Are Started, But One Step Away: ",
-	TestStart: "\nPlease Set Up [system Agent]\nand Test Whether The Service Is Available.",
+	SettingStart: "\nPlease Set Up [system Agent]",
+	TestStart: "And Test Whether The Service Is Available.",
 }

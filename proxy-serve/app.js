@@ -35,7 +35,8 @@ function main( proxyAddr=false, proxyPort=false ){
 		console.log( `${i18n.HttpsServer}:\t  https:  //${servers}:${ports.https}` );
 		console.log( `${i18n.SNIServer}:  \t  https:  //${servers}:${ports.SNI}` );
 		console.log( `${i18n.BeforeStart}` );
-		console.log( `${i18n.TestStart}` );
+		console.log( `${i18n.SettingStart} http[s]://${servers}:${ports}` );
+		console.log( `${i18n.TestStart}\n` );
 	}).catch(e=>{
 		console.warn( `启动服务器失败` );
 	});
