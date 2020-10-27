@@ -1,0 +1,6 @@
+{
+  "dependencies": {
+    "node-forge": "^0.10.0",
+    "through2": "^4.0.2"
+  }
+}

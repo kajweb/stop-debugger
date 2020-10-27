@@ -45,12 +45,13 @@ npm run en
 
 We provide a relatively rich test page to test the debugger. You can open the `Chrome DevTools` and click the corresponding item to view the running result.
 
-[Debugger Usability Test Address](http://kajweb.github.io/stop-debugger/en)
+[Debugger Usability Test Address](https://kajweb.github.io/stop-debugger/en)
 
 ## Directory Structure
 
+
 | Directory name | Function |
-| :------------------: | :--------------------------- -------------------------------- |
+| :---: | :--- |
 | **depoly** | github page deployment page, used to provide developers to test the debugger operation |
 | **proxy-serve** | Node proxy server code. Debugger for blocking plaintext |
 | **chrome-extension** | Source code of chrome extension. Used to shield specific functions that can execute the `debugger` method, |
@@ -61,7 +62,6 @@ We provide a relatively rich test page to test the debugger. You can open the `C
 | **dev** | Program test development directory, most of which are meaningless codes. |
 | | It is only used for various experimental tests during the development process, and developers do not need to pay too much attention to this directory. |
 | **docs** | System documentation directory, covering documents in various languages, |
-
 
 
 ## Support Plan
@@ -174,33 +174,33 @@ Function.prototype.constructor("debugger")()
 // http://www.sc.10086.cn/service/login.html
 
 let _0x2764ed = {
-wcluU: "debu",
-tvBGO: "gger",
-tOyvN: "action",
-vyxZy(a,b){return a+b}
+	wcluU: "debu",
+	tvBGO: "gger",
+	tOyvN: "action",	
+	vyxZy(a,b){return a+b}
 }
 
 function xhs__0x4f79(e){
-switch(e){
-case '0x1e3':
-return "constructor";
-break;
-case '0x5c6':
-return "vyxZy";
-break;
-case '0x5ca':
-return "wcluU";
-break;
-case '0x5d0':
-return "tOyvN";
-break;
-default:
-throw new RangeError( e );
-break;
-}
+	switch(e){
+		case '0x1e3':
+			return "constructor";
+			break;
+		case '0x5c6':
+			return "vyxZy";
+			break;
+		case '0x5ca':
+			return "wcluU";
+			break;
+		case '0x5d0':
+			return "tOyvN";
+			break;
+		default:
+			throw new RangeError( e );
+			break;
+	}
 }
 
-(function() {)[xhs__0x4f79('0x1e3')](_0x2764ed[xhs__0x4f79('0x5c6')](_0x2764ed[xhs__0x4f79('0x5ca')], _0x2764ed['\x42'x47\x76\ ))['\x63\x61\x6c\x6c'](_0x2764ed[xhs__0x4f79('0x5d0')]));
+(function() {}[xhs__0x4f79('0x1e3')](_0x2764ed[xhs__0x4f79('0x5c6')](_0x2764ed[xhs__0x4f79('0x5ca')], _0x2764ed['\x74\x76\x42\x47\x4f']))['\x63\x61\x6c\x6c'](_0x2764ed[xhs__0x4f79('0x5d0')]));
 
 (function() {}["constructor"]("debugger")["call"]("action"));
 ```

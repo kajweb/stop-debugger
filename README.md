@@ -48,7 +48,7 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 
 我们提供一个功能相对丰富的测试页面用来测试debugger，您可以打开`Chrome DevTools`控制台，点击相应的项查看运行结果。
 
-[debugger可用性测试地址](http://kajweb.github.io/stop-debugger)
+[debugger可用性测试地址](https://kajweb.github.io/stop-debugger)
 
 
 

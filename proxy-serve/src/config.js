@@ -21,7 +21,7 @@ module.exports = {
 	// 默认字符集设置
 	characterSet: {
 		// 检测编码时默认字符集
-		default: "gb2312",
+		default: "utf-8",
 		// 优先设置：header、meta、default
 		priority: IncCharacterSetPriority.header
 	}

@@ -82,14 +82,13 @@ function requestProcess( cReq, cRes, requestObj, options ){
         let contentType = Encoding.getContentType(pRes.headers);
         let isDocModifiable = Core.isDocModifiable( contentType );
         if( isDocModifiable && thisZlib.encoding ){
-            pRes
-                .pipe(thisZlib.unzip)
+            pRes.pipe(thisZlib.unzip)
                 .pipe(through2( Core.pipeIconv(contentType) ))
-                // .pipe(through2(Core.pipe))
                 .pipe(thisZlib.zip)
                 .pipe(cRes);
         } else if( isDocModifiable ){
-            pRes.pipe(through2( Core.pipeIconv(contentType) )).pipe(cRes);
+            pRes.pipe(through2( Core.pipeIconv(contentType) ))
+                .pipe(cRes);
         } else {
             pRes.pipe(cRes);
         }
