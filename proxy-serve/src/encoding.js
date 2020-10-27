@@ -179,7 +179,7 @@ function getCharsetFromMeta( chunk, characterSetDefault ){
  */
 function resetCharsetToIconv( charset ){
 	charset = charset.toLowerCase();
-	// console.log( `[resetChrasetToIconv] ${charset}` );
+	console.log( `[resetChrasetToIconv] ${charset}` );
 	return charset;
 }
 

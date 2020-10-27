@@ -48,6 +48,7 @@ function isDocModifiable( contentType ){
 function pipeIconv( contentType ){
 	var characterSet = false;
 	return ( chunk, enc, cb )=>{
+		console.log( chunk.toString() )
 		let data = false;
 		if( !characterSet ){
 			let charsetObj = Encoding.getCharset( contentType, chunk );
