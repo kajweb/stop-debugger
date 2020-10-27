@@ -39,6 +39,7 @@ function getZlib( contentEncoding ){
 	      break;
 	    case '':
 	    	return { encoding: false };
+	    	break;
 	    default:
 	    	console.log( contentEncoding )
 	    	throw new Error("UnKnow content-encoding");
@@ -179,7 +180,7 @@ function getCharsetFromMeta( chunk, characterSetDefault ){
  */
 function resetCharsetToIconv( charset ){
 	charset = charset.toLowerCase();
-	console.log( `[resetChrasetToIconv] ${charset}` );
+	// console.log( `[resetChrasetToIconv] ${charset}` );
 	return charset;
 }
 
