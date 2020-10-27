@@ -45,7 +45,7 @@ npm run en
 
 We provide a relatively rich test page to test the debugger. You can open the `Chrome DevTools` and click the corresponding item to view the running result.
 
-[Debugger Usability Test Address](http://kajweb.github.io/stop-debugger/en)
+[Debugger Usability Test Address](https://kajweb.github.io/stop-debugger/en)
 
 ## Directory Structure
 
