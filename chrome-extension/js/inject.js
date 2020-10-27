@@ -42,20 +42,20 @@ Function.prototype.constructor = (function( oldFn ) {
 		if( arguments[0] !== 'debugger' ){
 			console.log( arguments )
 	    	return oldFn.apply(this, arguments);
-		}
-		return false;
+		};
+		// return false;
 
-		let args = [...arguments]
+		let args = [...arguments];
 	    let arg = args[0];
 	    if (arg) {
 	        if (arg.includes('debugger')) {
 	        	arg = annotateDebugger( arg );
 			    args.splice( 0, 1, arg );
 			    successInterception( "constructor", arg );
-	        }
-	    }
+	        };
+	    };
 	    return oldFn.apply(this, args);
-    }
+    };
 })(Function.prototype.constructor);
 successStart( "拦截方法1" );
 
@@ -63,7 +63,7 @@ successStart( "拦截方法1" );
 Function = (function( oldFn ){
 	return function(){
 		console.log( arguments )
-		return oldFn.apply( this, arguments )
+		// return oldFn.apply( this, arguments )
 
 		let args = [...arguments];
 		let arg = args[args.length-1];
@@ -80,12 +80,14 @@ successStart( "拦截方法2" );
 eval = (function( oldFn ){
 	return function( arg ){
 		console.log( arguments )
-		return oldFn.apply( this, arguments )
+		// return oldFn.apply( this, arguments )
 
 		if( arg.includes("debugger") ){
 			arg = annotateDebugger( arg );
 		    successInterception( "eval", arg );
 		}
+		console.log( "arg" )
+		console.log( arg )
 		oldFn.call( this, arg );
 	}
 })(eval)

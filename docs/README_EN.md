@@ -11,6 +11,17 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 
 一个**禁止**`Chrome DevTools`中执行**debugger**的拓展和`系统代理`。
 
+## Running Result
+
+- TurnOff
+
+![TurnOff.gif](https://raw.githubusercontent.com/kajweb/stop-debugger/main/docs/static/TurnOff.gif)
+
+- TurnOn
+
+![TurnOn.gif](https://raw.githubusercontent.com/kajweb/stop-debugger/main/docs/static/TurnOn.gif)
+
+
 ## Instructions for use
 
 This program is divided into two parts: `chrome browser extension` and `Node system agent`.
