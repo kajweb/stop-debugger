@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>多种debugger的情况（复合文件版）</title>
+	<link rel="stylesheet" type="text/css" href="./extensionSet.css" />
+</head>
+<body>
+<h1>（复合文件版）请打开chrome dev进行调试<a href="extensionSetSingle.html">单文件版</a></h1>
+<p>本页面展示多种debugger的情况，内容与<a href="https://github.com/kajweb/stop-debugger">github://kajweb/stop-debugger</a>一致</p>
+<div class="main-aera">
+	<p class="bindTap">0、不带分号的debugger</p>
+	<p class="bindTap">1、带分号的debugger</p>
+	<p class="bindTap">2、（多语句）后面还带语句的debugger</p>
+	<p class="bindTap">3、（多语句）前面、后面还带语句的debugger</p>
+	<p class="bindTap">4、（多语句）前面还带语句的debugger</p>
+	<p class="bindTap">5、使用Function生成的debugger</p>
+	<p class="bindTap">6、使用Function生成的多参数debugger</p>
+	<p class="bindTap">7、预防简单的检测</p>
+	<p class="bindTap">8、使用eval执行debugger</p>
+	<p class="bindTap">9、使用Function.prototype.constructor执行debugger</p>
+	<p class="bindTap">10、使用Function.prototype.constructor执行debugger（经过混淆）</p>
+</div>
+</body>
+<script type="text/javascript" src="./extensionSet.js"></script>
+</html>

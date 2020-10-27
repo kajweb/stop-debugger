@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>debugger parse</title>
+</head>
+<body>
+	debugger;测试
+<script type="text/javascript">
+let a = 1;
+let b = 2;
+debugger
+ debugger 
+let c = a + b;
+debugger;
+ debugger; 
+let d = 1,e = 2;debugger;let f = d+e;
+d = 1,e = 2; debugger;f = d+e;
+d = 1,e = 2; debugger; f = d+e;
+let db1 = "debugger";
+let db2 = " debugger ";
+let db3 = "debugger;";
+let db4 = "debuggerdebugger";
+let db5 = "debugger;";
+let db6 = "he\"debugger";
+let db7 = "he;\"debugger";
+let db8 = "he\";debugger";
+let db9 = "he\";debugger"; debugger;debugger;debugger   ;let db10 = `hed"ebuger`; 
+</script>
+</body>
+</html>
