@@ -4,7 +4,7 @@
 
 # stop-debugger
 
-<img src="chrome-extension/img/icon.png" width="200">
+<img src="https://i.loli.net/2020/10/30/bF3u8VDjAkiqQIt.png" width="200">
 
 一个**禁止**`Chrome DevTools`中执行**debugger**的拓展和`系统代理`。
 
@@ -81,7 +81,7 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 
 ## 支持计划
 
-可以在[deploy](./deploy/)，或者打开[在线测试页面](http://test.iwwee.com/debugger/extensionSet.html)
+可以在[deploy](deploy)，或者打开[在线测试页面](http://test.iwwee.com/debugger/extensionSet.html)
 
 - - [x] 不带分号的debugger
 
