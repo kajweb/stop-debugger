@@ -22,6 +22,16 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 
 ![TurnOn.gif](https://i.loli.net/2020/10/28/TIqopWDmUzKrO5k.gif)
 
+
+
+## 原理架构
+
+- Proxy
+
+
+![theory.png](https://i.loli.net/2020/11/11/YwHRDBWr2eVmn3f.png)
+
+
 ## 使用说明
 
 本程序分为两个部分：`chrome浏览器拓展`和`Node系统代理`。  

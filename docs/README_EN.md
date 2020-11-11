@@ -22,6 +22,13 @@ A `Chrome Extension` and `system proxy`  for **disable** the **debugger** functi
 ![TurnOn.gif](https://raw.githubusercontent.com/kajweb/stop-debugger/main/docs/static/TurnOn.gif)
 
 
+
+## The principle of architecture
+
+- Proxy
+
+![theory.png](https://raw.githubusercontent.com/kajweb/stop-debugger/main/docs/static/theory.png)
+
 ## Instructions for use
 
 This program is divided into two parts: `chrome browser extension` and `Node system agent`.
